@@ -7,5 +7,6 @@ public interface GenericJDBC<T> {
 	Long insert(String sql, Object... parameters);
 	void update(String sql, Object... parameters);
 	Long insert(Object object);
-	void update(Object object, long id);
+	void update(Object object);
+	void delete(Long id);
 }

@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipEntry;
 
 import com.vvhien.annotation.Column;
 import com.vvhien.annotation.Table;
@@ -32,7 +30,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	private Connection getConnection() {
 		String dbURL = "jdbc:mysql://localhost:3306/estate042019";
 		String username = "root";
-		String password = "1234@5678";
+		String password = "123456";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -42,7 +40,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			return null;
 		}
 	}
-  
+
 	@Override
 	public List query(String sql, Object... parameters) {
 		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
@@ -83,7 +81,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				int rowsInserted = ps.executeUpdate();
 				rs = ps.getGeneratedKeys();
 				con.commit();
-				if (rowsInserted > 0) {  
+				if (rowsInserted > 0) {
 					while (rs.next()) {
 						Long id = rs.getLong(1);
 						return id;
@@ -130,7 +128,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			System.out.println("Error: " + e.getMessage());
-			if (con != null) { 
+			if (con != null) {
 				try {
 					con.rollback();
 				} catch (SQLException e1) {
@@ -156,9 +154,9 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		try {
 			con = getConnection();
 			con.setAutoCommit(false);
-			
+
 			String sql = createSQLInsert();
-			
+
 			ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			if (con != null) {
@@ -170,12 +168,12 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					field.setAccessible(true);
 					ps.setObject(index, field.get(object));
 				}
-				
+
 				Class<?> parentClass = zClass.getSuperclass();
-				
+
 				int indexParent = fields.length + 1;
 				while (parentClass != null) {
-					for (int i = 0; i < parentClass.getDeclaredFields().length; i++) {					
+					for (int i = 0; i < parentClass.getDeclaredFields().length; i++) {
 						Field field = parentClass.getDeclaredFields()[i];
 						field.setAccessible(true);
 						System.out.println("indexParent " + indexParent + " field.get(object) " + field.get(object));
@@ -187,7 +185,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				int rowsInserted = ps.executeUpdate();
 				rs = ps.getGeneratedKeys();
 				con.commit();
-				if (rowsInserted > 0) {  
+				if (rowsInserted > 0) {
 					while (rs.next()) {
 						Long id = rs.getLong(1);
 						return id;
@@ -223,7 +221,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		}
 		StringBuilder fields = new StringBuilder("");
 		StringBuilder params = new StringBuilder("");
-		
+
 		for (Field field : zClass.getDeclaredFields()) {
 			if (fields.length() > 1) {
 				fields.append(",");
@@ -250,14 +248,168 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			}
 			parentClass = parentClass.getSuperclass();
 		}
-		String sql = "INSERT INTO " + tableName + "(" + fields.toString() + ") VALUES(" +  params.toString() + ")";
+		String sql = "INSERT INTO " + tableName + "(" + fields.toString() + ") VALUES(" + params.toString() + ")";
 		return sql;
 	}
 
 	@Override
-	public void update(Object object, long id) {
-		// TODO Auto-generated method stub
+	public void update(Object object) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLUpdate();
+			ps = con.prepareStatement(sql);
+			
+			if (con != null) {
+				Class<?> zClass = object.getClass();
+				Field[] fields = zClass.getDeclaredFields();
+				
+				for (int i = 0; i < fields.length; i++) {
+					int index = i + 1;
+					Field field = fields[i];
+					field.setAccessible(true);
+					System.out.println("index " + index + " field.get(object) " + field.getName() + " " + field.get(object));
+					ps.setObject(index, field.get(object));
+				}
+
+				Class<?> parentClass = zClass.getSuperclass();
+
+				int indexParent = fields.length + 1;
+				Object id = null;
+				while (parentClass != null) {
+					for (int i = 0; i < parentClass.getDeclaredFields().length; i++) {
+						Field field = parentClass.getDeclaredFields()[i];
+						field.setAccessible(true);
+						String name = field.getName();
+						if(!name.equals("id")) {
+							System.out.println("indexParent " + indexParent + " field.get(object) " + field.getName() + " " + field.get(object));
+							ps.setObject(indexParent, field.get(object));
+							indexParent = indexParent + 1;
+						}
+						else {
+							id = field.get(object);
+						}
+					}
+					parentClass = parentClass.getSuperclass();
+				}
+				ps.setObject(indexParent, id);
+				indexParent = indexParent + 1;
+				ps.executeUpdate();
+				con.commit();
+			}
+		} catch (SQLException  | IllegalArgumentException | IllegalAccessException e) {
+			System.out.println("Error: " + e.getMessage());
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.out.println("Error: " + e1.getMessage());
+				}
+			}
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Error: " + e.getMessage());
+				}
+			}
+		}
+	}
+
+	private String createSQLUpdate() {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
 		
+		StringBuilder sets = new StringBuilder("");
+		String where = " WHERE ";
+
+		for (Field field : zClass.getDeclaredFields()) {
+			if (field.isAnnotationPresent(Column.class)) {
+				Column column = field.getAnnotation(Column.class);
+				String columnName =  column.name();
+				String value = columnName + " = ? ";
+				if(!columnName.equals("id")) {
+					if (sets.length() > 1) {
+						sets.append(", ");
+					}
+					sets.append(value);
+				}
+			}
+		}
+		Class<?> parentClass = zClass.getSuperclass();
+		while (parentClass != null) {
+			for (Field field : parentClass.getDeclaredFields()) {
+				if (field.isAnnotationPresent(Column.class)) {
+					Column column = field.getAnnotation(Column.class);
+					String columnName =  column.name();
+					String value = columnName + " = ? ";
+					if(!columnName.equals("id")) {
+						if (sets.length() > 1) {
+							sets.append(", ");
+						}
+						sets.append(value);
+					}
+					else {
+						where = where + value;
+					}
+				}
+			}
+			parentClass = parentClass.getSuperclass();
+		}
+		String sql = "UPDATE " + tableName + " SET " + sets.toString() + where;
+		return sql;
+	}
+
+	@Override
+	public void delete(Long id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLDelete();
+			System.out.println("Sql delete: " + sql);
+			ps = con.prepareStatement(sql);
+			
+			if (con != null) {
+				ps.setObject(1, id);
+				ps.executeUpdate();
+				con.commit();
+			}
+		} catch (SQLException  | IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.out.println("Error: " + e1.getMessage());
+				}
+			}
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Error: " + e.getMessage());
+				}
+			}
+		}
+	}
+
+	private String createSQLDelete() {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		String sql = "DELETE FROM " + tableName + " WHERE id = ?";
+		return sql;
 	}
 
 }
