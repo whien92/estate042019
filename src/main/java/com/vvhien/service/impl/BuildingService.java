@@ -35,5 +35,9 @@ public class BuildingService implements IBuildingService{
 	public void delete(Long id) {
 		buildingRepository.delete(id);
 	}
+	@Override
+	public BuildingDTO findById(Long id) {	
+		return buildingRepository.findById(id);
+	}
 
 }

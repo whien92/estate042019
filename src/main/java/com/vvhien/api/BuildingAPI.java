@@ -2,6 +2,7 @@
 
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vvhien.dto.BuildingDTO;
-import com.vvhien.repository.IBuildingRepository;
-import com.vvhien.repository.impl.BuildingRepository;
 import com.vvhien.service.IBuildingService;
 import com.vvhien.service.impl.BuildingService;
 import com.vvhien.utils.HttpUtil;
@@ -25,6 +24,40 @@ public class BuildingAPI extends HttpServlet{
 	
 	public BuildingAPI() {
 		buildingService = new BuildingService();
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Enumeration<String> parameterNames = req.getParameterNames();	
+		int sizeOfParams = 0;
+		Long id = null;
+		
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            System.out.println("paramName - " + paramValue);
+            
+            if(paramName.equals("id")) {
+            	id = Long.valueOf(paramValue);
+            }
+            sizeOfParams++;
+        }
+        
+        if (sizeOfParams == 0) { 
+        	//do getAllBuildings
+        }
+        else if (sizeOfParams == 1 && id != null) {
+        	//do findById
+        	ObjectMapper objectMapper = new ObjectMapper();
+    		req.setCharacterEncoding("UTF-8");
+    		resp.setContentType("application/json");
+    		
+        	BuildingDTO buildingDTO = buildingService.findById(id);
+        	objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
+        }
+        else {
+        	//do searchBy
+        }
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,6 +88,10 @@ public class BuildingAPI extends HttpServlet{
 		BuildingDTO buildingDTO =  HttpUtil.of(req.getReader()).toModel(BuildingDTO.class);
 		buildingService.delete(buildingDTO.getId());
 		objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 
 }

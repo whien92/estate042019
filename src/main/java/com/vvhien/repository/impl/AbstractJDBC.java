@@ -9,16 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 
 import com.vvhien.annotation.Column;
 import com.vvhien.annotation.Table;
+import com.vvhien.dto.BuildingDTO;
 import com.vvhien.mapper.ResultSetMapper;
 import com.vvhien.repository.GenericJDBC;
 
 public class AbstractJDBC<T> implements GenericJDBC<T> {
 	
 	private Class<T> zClass;
+	private ModelMapper modelMapper;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractJDBC() {
@@ -409,6 +414,44 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			tableName = table.name();
 		}
 		String sql = "DELETE FROM " + tableName + " WHERE id = ?";
+		return sql;
+	}
+
+	@Override
+	public BuildingDTO findById(Long id) {
+		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
+		List results = new ArrayList<>();
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLFindById(id);
+			ps = con.prepareStatement(sql);
+			
+			if (con != null) {
+				ps.setObject(1, id);
+				rs = ps.executeQuery();
+				con.commit();
+				results = resultSetMapper.mapRow(rs, zClass);
+				return modelMapper.map(results.get(0), BuildingDTO.class);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return null;	
+	}
+
+	private String createSQLFindById(Long id) {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
 		return sql;
 	}
 
