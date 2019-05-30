@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import com.vvhien.annotation.Column;
 import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
+import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
 import com.vvhien.repository.GenericJDBC;
 
@@ -35,7 +36,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	private Connection getConnection() {
 		String dbURL = "jdbc:mysql://localhost:3306/estate042019";
 		String username = "root";
-		String password = "123456";
+		String password = "1234@5678";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -275,7 +276,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					int index = i + 1;
 					Field field = fields[i];
 					field.setAccessible(true);
-					System.out.println("index " + index + " field.get(object) " + field.getName() + " " + field.get(object));
+					System.out.println("index " + index +  field.getName() + " " + field.get(object));
 					ps.setObject(index, field.get(object));
 				}
 
@@ -289,7 +290,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 						field.setAccessible(true);
 						String name = field.getName();
 						if(!name.equals("id")) {
-							System.out.println("indexParent " + indexParent + " field.get(object) " + field.getName() + " " + field.get(object));
+							System.out.println("indexParent " + indexParent +  field.getName() + " " + field.get(object));
 							ps.setObject(indexParent, field.get(object));
 							indexParent = indexParent + 1;
 						}
@@ -418,7 +419,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	}
 
 	@Override
-	public BuildingDTO findById(Long id) {
+	public BuildingEntity findById(Long id) {
 		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
 		List results = new ArrayList<>();
 		
@@ -435,9 +436,9 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			if (con != null) {
 				ps.setObject(1, id);
 				rs = ps.executeQuery();
-				con.commit();
 				results = resultSetMapper.mapRow(rs, zClass);
-				return modelMapper.map(results.get(0), BuildingDTO.class);
+				BuildingEntity building =  (BuildingEntity) results.get(0);
+				return building;
 			}
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
