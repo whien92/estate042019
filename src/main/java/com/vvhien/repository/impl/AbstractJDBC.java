@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import com.vvhien.annotation.Column;
 import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
+import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
 import com.vvhien.repository.GenericJDBC;
 
@@ -37,7 +38,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	private Connection getConnection() {
 		String dbURL = "jdbc:mysql://localhost:3306/estate042019";
 		String username = "root";
-		String password = "1234@5678";
+		String password = "123456";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
