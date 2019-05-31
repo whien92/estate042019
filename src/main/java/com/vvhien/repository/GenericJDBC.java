@@ -1,10 +1,7 @@
  package com.vvhien.repository;
 
 import java.util.List;
-
 import com.vvhien.dto.BuildingDTO;
-import com.vvhien.entity.BuildingEntity;
-
 public interface GenericJDBC<T> {
 	List<T> query(String sql, Object ...parameters);
 	Long insert(String sql, Object... parameters);
@@ -12,5 +9,6 @@ public interface GenericJDBC<T> {
 	Long insert(Object object);
 	void update(Object object);
 	void delete(Long id);
-	BuildingEntity findById(Long id);
+	BuildingDTO findById(Long id);
+	List<BuildingDTO> findBy(Iterator parameterNames);
 }

@@ -10,22 +10,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 
 import com.vvhien.annotation.Column;
 import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
-import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
 import com.vvhien.repository.GenericJDBC;
 
 public class AbstractJDBC<T> implements GenericJDBC<T> {
-	
+
 	private Class<T> zClass;
 	private ModelMapper modelMapper;
-	
+
 	@SuppressWarnings("unchecked")
 	public AbstractJDBC() {
 		Type type = getClass().getGenericSuperclass();
@@ -267,11 +268,11 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			con.setAutoCommit(false);
 			String sql = createSQLUpdate();
 			ps = con.prepareStatement(sql);
-			
+
 			if (con != null) {
 				Class<?> zClass = object.getClass();
 				Field[] fields = zClass.getDeclaredFields();
-				
+
 				for (int i = 0; i < fields.length; i++) {
 					int index = i + 1;
 					Field field = fields[i];
@@ -293,8 +294,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 							System.out.println("indexParent " + indexParent +  field.getName() + " " + field.get(object));
 							ps.setObject(indexParent, field.get(object));
 							indexParent = indexParent + 1;
-						}
-						else {
+						} else {
 							id = field.get(object);
 						}
 					}
@@ -305,7 +305,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				ps.executeUpdate();
 				con.commit();
 			}
-		} catch (SQLException  | IllegalArgumentException | IllegalAccessException e) {
+		} catch (SQLException | IllegalArgumentException | IllegalAccessException e) {
 			System.out.println("Error: " + e.getMessage());
 			if (con != null) {
 				try {
@@ -331,16 +331,16 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Table table = zClass.getAnnotation(Table.class);
 			tableName = table.name();
 		}
-		
+
 		StringBuilder sets = new StringBuilder("");
 		String where = " WHERE ";
 
 		for (Field field : zClass.getDeclaredFields()) {
 			if (field.isAnnotationPresent(Column.class)) {
 				Column column = field.getAnnotation(Column.class);
-				String columnName =  column.name();
+				String columnName = column.name();
 				String value = columnName + " = ? ";
-				if(!columnName.equals("id")) {
+				if (!columnName.equals("id")) {
 					if (sets.length() > 1) {
 						sets.append(", ");
 					}
@@ -353,15 +353,14 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			for (Field field : parentClass.getDeclaredFields()) {
 				if (field.isAnnotationPresent(Column.class)) {
 					Column column = field.getAnnotation(Column.class);
-					String columnName =  column.name();
+					String columnName = column.name();
 					String value = columnName + " = ? ";
-					if(!columnName.equals("id")) {
+					if (!columnName.equals("id")) {
 						if (sets.length() > 1) {
 							sets.append(", ");
 						}
 						sets.append(value);
-					}
-					else {
+					} else {
 						where = where + value;
 					}
 				}
@@ -382,13 +381,13 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			String sql = createSQLDelete();
 			System.out.println("Sql delete: " + sql);
 			ps = con.prepareStatement(sql);
-			
+
 			if (con != null) {
 				ps.setObject(1, id);
 				ps.executeUpdate();
 				con.commit();
 			}
-		} catch (SQLException  | IllegalArgumentException e) {
+		} catch (SQLException | IllegalArgumentException e) {
 			System.out.println("Error: " + e.getMessage());
 			if (con != null) {
 				try {
@@ -422,17 +421,17 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	public BuildingEntity findById(Long id) {
 		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
 		List results = new ArrayList<>();
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		try {
 			con = getConnection();
 			con.setAutoCommit(false);
 			String sql = createSQLFindById(id);
 			ps = con.prepareStatement(sql);
-			
+
 			if (con != null) {
 				ps.setObject(1, id);
 				rs = ps.executeQuery();
@@ -443,7 +442,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
 		}
-		return null;	
+		return null;
 	}
 
 	private String createSQLFindById(Long id) {
@@ -454,6 +453,63 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		}
 		String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
 		return sql;
+	}
+
+	@Override
+	public List<BuildingDTO> findBy(Iterator parameterNames) {
+		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
+		List results = new ArrayList<>();
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLFindBy(parameterNames);
+			ps = con.prepareStatement(sql);
+
+			if (con != null) {
+				rs = ps.executeQuery();
+				results = resultSetMapper.mapRow(rs, zClass);
+				return results;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return null;
+	}
+
+	private String createSQLFindBy(Iterator parameterNames) {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		
+		StringBuilder filters = new StringBuilder();
+		String sql = "SELECT * FROM " + tableName + " WHERE ";
+
+		while (parameterNames.hasNext()) {
+			Map.Entry<String, String[]> entry = (Map.Entry<String, String[]>) parameterNames.next();
+			String paramName = entry.getKey();
+			String[] paramValues = entry.getValue();
+			
+			if (paramValues.length == 1) {
+                String paramValue = paramValues[0];
+                if (filters.length() > 1) {
+                	filters.append(" AND ");
+				}
+                filters.append(paramName + " LIKE \'%" + paramValue + "%\' ");
+                
+            } else {
+                System.out.println("A A A A A");
+            }
+			
+			
+		}
+		return sql + filters;
 	}
 
 }

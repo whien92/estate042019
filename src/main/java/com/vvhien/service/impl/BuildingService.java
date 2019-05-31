@@ -1,6 +1,8 @@
 package com.vvhien.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Iterator;
+import java.util.List;
 
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
@@ -40,6 +42,11 @@ public class BuildingService implements IBuildingService{
 		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingRepository.findById(id));
 		return buildingDTO;
+	}
+	
+	@Override
+	public List<BuildingDTO> findBy(Iterator parameterNames) {
+		return buildingRepository.findBy(parameterNames);
 	}
 
 }
