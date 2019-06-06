@@ -9,6 +9,21 @@ public class AbstractDTO {
 	private String modifiedBy;
 	private Timestamp createdDate;
 	private Timestamp modifiedDate;
+	private int maxPageItem = 10;
+	private int page = 1;
+	
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getMaxPageItem() {
+		return maxPageItem;
+	}
+	public void setMaxPageItem(int maxPageItem) {
+		this.maxPageItem = maxPageItem;
+	}
 	public Long getId() {
 		return id;
 	}

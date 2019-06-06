@@ -1,5 +1,6 @@
 package com.vvhien.api;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vvhien.dto.BuildingDTO;
+import com.vvhien.paging.Pageble;
 import com.vvhien.service.IBuildingService;
 import com.vvhien.service.impl.BuildingService;
 import com.vvhien.utils.HttpUtil;
@@ -33,6 +35,9 @@ public class BuildingAPI extends HttpServlet {
 		Map m = req.getParameterMap();
 		Set s = m.entrySet();
 		Iterator it = s.iterator();
+		
+		Pageble pageble = null;
+		Object where = null;
 
 		int sizeOfParams = m.size();
 		Long id = null;
@@ -43,13 +48,20 @@ public class BuildingAPI extends HttpServlet {
 
 		if (sizeOfParams == 0) {
 			// do getAllBuildings
+			ObjectMapper objectMapper = new ObjectMapper();
+			req.setCharacterEncoding("UTF-8");
+			resp.setContentType("application/json");
+
+			List<BuildingDTO> buildingDTOs = buildingService.findAll(m, pageble, where);
+			objectMapper.writeValue(resp.getOutputStream(), buildingDTOs);
+			
 		} else if (sizeOfParams == 1 && id != null) {
 			// do findById
 			ObjectMapper objectMapper = new ObjectMapper();
 			req.setCharacterEncoding("UTF-8");
 			resp.setContentType("application/json");
 
-			BuildingDTO buildingDTO = buildingService.findById(id);
+			BuildingDTO buildingDTO = buildingService.findById1(id);
 			objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
 		} else {
 			// do FindBy

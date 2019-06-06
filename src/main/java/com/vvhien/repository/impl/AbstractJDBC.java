@@ -21,6 +21,8 @@ import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
+import com.vvhien.paging.Pageble;
+import com.vvhien.paging.Sorter;
 import com.vvhien.repository.GenericJDBC;
 
 public class AbstractJDBC<T> implements GenericJDBC<T> {
@@ -511,6 +513,163 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			
 		}
 		return sql + filters;
+	}
+
+	@Override
+	public <T> T findById1(Long id) {
+		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
+		String sql = "";
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			sql = createSQLFindById(id);
+			ps = con.prepareStatement(sql);
+
+			if (con != null) {
+				ps.setObject(1, id);
+				rs = ps.executeQuery(); 
+				return resultSetMapper.mapRow(rs, zClass).get(0);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("Error: " + e2.getMessage());
+			}
+		}
+		return null;   
+	}
+
+	@Override
+	public void delete1(Long id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLDelete();
+			System.out.println("Sql delete: " + sql); 
+			ps = con.prepareStatement(sql);
+
+			if (con != null) {
+				ps.setObject(1, id);
+				ps.executeUpdate();
+				con.commit();
+			}
+		} catch (SQLException | IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.out.println("Error: " + e1.getMessage());
+				}
+			}
+		} finally {
+			if (con != null) { 
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Error: " + e.getMessage());
+				}
+			}
+		} 
+	}
+
+	@Override
+	public List<T> findAll(Map<String, Object> properties, Pageble pageble, Object... where) {
+		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
+		Connection con = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		
+		StringBuilder sql = createSQLFindAll(properties);
+		if(where != null && where.length > 0) {
+			sql.append(where[0]);
+		}
+		
+		if(pageble != null  ) {
+			if(pageble.getOffset() != null && pageble.getLimit() != null) {
+				sql.append(" LIMIT " + pageble.getOffset() + ", " + pageble.getLimit() + "");
+			}
+			if(pageble.getSorter() != null) {
+				Sorter sorter = pageble.getSorter();
+				sql.append(" ORDER BY " + sorter.getSortName() + " " + sorter.getSortBy() + "");
+			}
+		}
+
+		try {
+			con = getConnection();
+			statement = con.createStatement();
+			rs = statement.executeQuery(sql.toString());
+
+			if (con != null) {
+				return resultSetMapper.mapRow(rs, zClass);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				} 
+				if (statement != null) {
+					statement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (Exception e2) {
+				System.out.println("Error: " + e2.getMessage());
+			}
+		}
+		return null;
+	}
+
+	private StringBuilder createSQLFindAll(Map<String, Object> properties) {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		
+		StringBuilder result = new StringBuilder("SELECT * FROM " + tableName + " WHERE 1 =1");
+		if(properties != null && properties.size() > 0) {
+			String[] params = new String[properties.size()];
+			Object[] values = new Object[properties.size()];
+			
+			int i = 0;
+			for (Map.Entry<?, ?> item : properties.entrySet()) {
+				params[i] = (String) item.getKey();
+				values[i] = item.getValue();
+				i++;
+			}
+			
+			for(int j = 0; j < params.length; j++) {
+				if (values[j] instanceof String) {
+					result.append(" and LOWER(" + params[j] + ") LIKE '%'" + values[j] + "'%' ");
+				}
+				else if (values[j] instanceof Integer) {
+					result.append(" and " + params[j] + " = " + values[j] + " ");
+				}
+			}
+		}
+		return result;
 	}
 
 }
