@@ -1,7 +1,7 @@
 package com.vvhien.service.impl;
 
-import java.awt.print.Pageable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +9,11 @@ import java.util.Map;
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
-import com.vvhien.paging.Pageble;
 import com.vvhien.repository.IBuildingRepository;
 import com.vvhien.repository.impl.BuildingRepository;
 import com.vvhien.service.IBuildingService;
+
+import paging.Pageble;
 
 public class BuildingService implements IBuildingService{
 	private IBuildingRepository buildingRepository;
@@ -57,11 +58,19 @@ public class BuildingService implements IBuildingService{
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingRepository.findById1(id));
 		return buildingDTO;
 	}
+
 	@Override
-	public List<BuildingDTO> findAll(Map m, Pageble pageble, Object where) {
+	public List<BuildingDTO> findAll(Map<String, Object> properties, Pageble pageble, Object...where) {
 		BuildingConverter buildingConverter = new BuildingConverter();
-		List<BuildingDTO> buildingDTOs = buildingConverter.convertToDTO(buildingRepository.findAll(m, pageble, where));
+		
+		List<BuildingDTO> buildingDTOs = new ArrayList<>();
+		List<BuildingEntity> buildingEntities= buildingRepository.findAll(properties, pageble, where);
+		for (int i = 0; i < buildingEntities.size(); i++) {
+			buildingDTOs.add(buildingConverter.convertToDTO(buildingEntities.get(i)));
+			
+		}
 		return buildingDTOs;
 	}
+
 
 }

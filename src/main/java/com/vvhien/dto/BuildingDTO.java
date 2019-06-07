@@ -199,6 +199,13 @@ public class BuildingDTO extends AbstractDTO{
 	public void setBuildingTypes(String[] buildingTypes) {
 		this.buildingTypes = buildingTypes;
 	}
+
+	@Override
+	public String toString() {
+		return 	this.getId() + "\t" + this.getName() + "\t" + this.getNumberOfBasement() + "\t" + 
+				this.getBuildingArea() + "\t"  + this.getWard() + "\t"  + 
+				this.getStreet();
+	}
 	
 	
 }

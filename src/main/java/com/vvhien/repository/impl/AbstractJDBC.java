@@ -21,9 +21,10 @@ import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
-import com.vvhien.paging.Pageble;
-import com.vvhien.paging.Sorter;
 import com.vvhien.repository.GenericJDBC;
+
+import paging.Pageble;
+import paging.Sorter;
 
 public class AbstractJDBC<T> implements GenericJDBC<T> {
 
@@ -40,7 +41,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	private Connection getConnection() {
 		String dbURL = "jdbc:mysql://localhost:3306/estate042019";
 		String username = "root";
-		String password = "123456";
+		String password = "1234@5678";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -280,7 +281,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					int index = i + 1;
 					Field field = fields[i];
 					field.setAccessible(true);
-					System.out.println("index " + index +  field.getName() + " " + field.get(object));
+					System.out.println("index " + index + field.getName() + " " + field.get(object));
 					ps.setObject(index, field.get(object));
 				}
 
@@ -293,8 +294,9 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 						Field field = parentClass.getDeclaredFields()[i];
 						field.setAccessible(true);
 						String name = field.getName();
-						if(!name.equals("id")) {
-							System.out.println("indexParent " + indexParent +  field.getName() + " " + field.get(object));
+						if (!name.equals("id")) {
+							System.out
+									.println("indexParent " + indexParent + field.getName() + " " + field.get(object));
 							ps.setObject(indexParent, field.get(object));
 							indexParent = indexParent + 1;
 						} else {
@@ -439,7 +441,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				ps.setObject(1, id);
 				rs = ps.executeQuery();
 				results = resultSetMapper.mapRow(rs, zClass);
-				BuildingEntity building =  (BuildingEntity) results.get(0);
+				BuildingEntity building = (BuildingEntity) results.get(0);
 				return building;
 			}
 		} catch (SQLException e) {
@@ -490,7 +492,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Table table = zClass.getAnnotation(Table.class);
 			tableName = table.name();
 		}
-		
+
 		StringBuilder filters = new StringBuilder();
 		String sql = "SELECT * FROM " + tableName + " WHERE ";
 
@@ -498,19 +500,18 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Map.Entry<String, String[]> entry = (Map.Entry<String, String[]>) parameterNames.next();
 			String paramName = entry.getKey();
 			String[] paramValues = entry.getValue();
-			
+
 			if (paramValues.length == 1) {
-                String paramValue = paramValues[0];
-                if (filters.length() > 1) {
-                	filters.append(" AND ");
+				String paramValue = paramValues[0];
+				if (filters.length() > 1) {
+					filters.append(" AND ");
 				}
-                filters.append(paramName + " LIKE \'%" + paramValue + "%\' ");
-                
-            } else {
-                System.out.println("A A A A A");
-            }
-			
-			
+				filters.append(paramName + " LIKE \'%" + paramValue + "%\' ");
+
+			} else {
+				System.out.println("A A A A A");
+			}
+
 		}
 		return sql + filters;
 	}
@@ -519,7 +520,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	public <T> T findById1(Long id) {
 		ResultSetMapper<T> resultSetMapper = new ResultSetMapper<>();
 		String sql = "";
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -532,7 +533,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 
 			if (con != null) {
 				ps.setObject(1, id);
-				rs = ps.executeQuery(); 
+				rs = ps.executeQuery();
 				return resultSetMapper.mapRow(rs, zClass).get(0);
 			}
 		} catch (SQLException e) {
@@ -552,7 +553,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				System.out.println("Error: " + e2.getMessage());
 			}
 		}
-		return null;   
+		return null;
 	}
 
 	@Override
@@ -563,7 +564,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			con = getConnection();
 			con.setAutoCommit(false);
 			String sql = createSQLDelete();
-			System.out.println("Sql delete: " + sql); 
+			System.out.println("Sql delete: " + sql);
 			ps = con.prepareStatement(sql);
 
 			if (con != null) {
@@ -581,14 +582,14 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 				}
 			}
 		} finally {
-			if (con != null) { 
+			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
 					System.out.println("Error: " + e.getMessage());
 				}
 			}
-		} 
+		}
 	}
 
 	@Override
@@ -597,21 +598,23 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		Connection con = null;
 		Statement statement = null;
 		ResultSet rs = null;
-		
+
 		StringBuilder sql = createSQLFindAll(properties);
-		if(where != null && where.length > 0) {
+		if (where != null && where.length > 0) {
 			sql.append(where[0]);
 		}
-		
-		if(pageble != null  ) {
-			if(pageble.getOffset() != null && pageble.getLimit() != null) {
-				sql.append(" LIMIT " + pageble.getOffset() + ", " + pageble.getLimit() + "");
-			}
-			if(pageble.getSorter() != null) {
+
+		if (pageble != null) {
+			if (pageble.getSorter() != null) {
 				Sorter sorter = pageble.getSorter();
 				sql.append(" ORDER BY " + sorter.getSortName() + " " + sorter.getSortBy() + "");
 			}
+			if (pageble.getOffset() != null && pageble.getLimit() != null) {
+				sql.append(" LIMIT " + pageble.getOffset() + ", " + pageble.getLimit() + "");
+			}
 		}
+		
+		System.out.println("Sql2 " + sql.toString());
 
 		try {
 			con = getConnection();
@@ -627,7 +630,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			try {
 				if (con != null) {
 					con.close();
-				} 
+				}
 				if (statement != null) {
 					statement.close();
 				}
@@ -646,30 +649,29 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		if (zClass.isAnnotationPresent(Table.class)) {
 			Table table = zClass.getAnnotation(Table.class);
 			tableName = table.name();
-		}
-		
-		StringBuilder result = new StringBuilder("SELECT * FROM " + tableName + " WHERE 1 =1");
-		if(properties != null && properties.size() > 0) {
-			String[] params = new String[properties.size()];
-			Object[] values = new Object[properties.size()];
-			
-			int i = 0;
-			for (Map.Entry<?, ?> item : properties.entrySet()) {
-				params[i] = (String) item.getKey();
-				values[i] = item.getValue();
-				i++;
-			}
-			
-			for(int j = 0; j < params.length; j++) {
-				if (values[j] instanceof String) {
-					result.append(" and LOWER(" + params[j] + ") LIKE '%'" + values[j] + "'%' ");
-				}
-				else if (values[j] instanceof Integer) {
-					result.append(" and " + params[j] + " = " + values[j] + " ");
-				}
-			}
-		}
-		return result;
-	}
 
+			StringBuilder result = new StringBuilder("SELECT * FROM " + tableName + " WHERE  1  = 1");
+			if (properties != null && properties.size() > 0) {
+				String[] params = new String[properties.size()];
+				Object[] values = new Object[properties.size()];
+
+				int i = 0;
+				for (Map.Entry<?, ?> item : properties.entrySet()) {
+					params[i] = (String) item.getKey();
+					values[i] = item.getValue();
+					i++;
+				}
+
+				for (int j = 0; j < params.length; j++) {
+					if (values[j] instanceof String) {
+						result.append(" and LOWER(" + params[j] + ") LIKE '%" + values[j] + "%' ");
+					} else if (values[j] instanceof Integer) {
+						result.append(" and " + params[j] + " = " + values[j] + " ");
+					}
+				}
+			}
+			return result;
+		}
+		return null;	
+	}
 }

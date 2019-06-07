@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.vvhien.dto.BuildingDTO;
 
+import paging.Pageble;
+
 public interface IBuildingService {
 	
 	BuildingDTO save(BuildingDTO buildingDTO);
@@ -21,5 +23,6 @@ public interface IBuildingService {
 
 	BuildingDTO findById1(Long id);
 
-	List<BuildingDTO> findAll(Map m, Pageable pageable, Object where);
+	List<BuildingDTO> findAll(Map<String, Object> properties, Pageble pageble, Object...where);
+
 }

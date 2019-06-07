@@ -1,7 +1,7 @@
 package com.vvhien.api;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +13,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vvhien.dto.BuildingDTO;
-import com.vvhien.paging.Pageble;
 import com.vvhien.service.IBuildingService;
 import com.vvhien.service.impl.BuildingService;
 import com.vvhien.utils.HttpUtil;
+
+import paging.PageRequest;
+import paging.Pageble;
+import paging.Sorter;
 
 @WebServlet(urlPatterns = { "/api-admin-building" })
 public class BuildingAPI extends HttpServlet {
@@ -35,9 +40,7 @@ public class BuildingAPI extends HttpServlet {
 		Map m = req.getParameterMap();
 		Set s = m.entrySet();
 		Iterator it = s.iterator();
-		
-		Pageble pageble = null;
-		Object where = null;
+
 
 		int sizeOfParams = m.size();
 		Long id = null;
@@ -48,11 +51,26 @@ public class BuildingAPI extends HttpServlet {
 
 		if (sizeOfParams == 0) {
 			// do getAllBuildings
+			Map<String, Object> properties = new HashedMap();
+			properties.put("name", "TMA");
+			properties.put("buildingarea", 1000);
+			
+			Sorter sorter = new Sorter("numberofbasement", "desc");
+			
+			Pageble pageble = new PageRequest(1, 2, sorter);
+			
+			Object[] where = null;
+			
+			List<BuildingDTO> buildingDTOs = buildingService.findAll(properties, pageble, where);
+			
+			for (int i = 0; i < buildingDTOs.size(); i++) {
+				System.out.println(buildingDTOs.get(i));
+			}
+			
+			
 			ObjectMapper objectMapper = new ObjectMapper();
 			req.setCharacterEncoding("UTF-8");
 			resp.setContentType("application/json");
-
-			List<BuildingDTO> buildingDTOs = buildingService.findAll(m, pageble, where);
 			objectMapper.writeValue(resp.getOutputStream(), buildingDTOs);
 			
 		} else if (sizeOfParams == 1 && id != null) {

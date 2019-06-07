@@ -6,7 +6,8 @@ import java.util.Map;
 
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
-import com.vvhien.paging.Pageble;
+
+import paging.Pageble;
 public interface GenericJDBC<T> {
 	List<T> query(String sql, Object ...parameters);
 	Long insert(String sql, Object... parameters);
