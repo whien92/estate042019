@@ -1,0 +1,15 @@
+DTO - Data Transfer Object
+
+Khi query tu` DB lên ResultSet -> Entity -> DTO -> Controller/API
+
+Table co´ bao nhiêu column thi` entity tuong u´ng co´ bâ´y nhiêu thuô?c ti´nh, dto se~ bao gô`m ca´c thuô?c ti´nh trong entity + thêm 1 sô´ thuô?c ti´nh kha´c câ`n thiê´t cho xu? ly´
+
+ResultSetMapper -> 
+
+BuildingAPI 
+
+IBuildingService
+
+BuildingService
+
+IBuildingRepository > GenericJDBC

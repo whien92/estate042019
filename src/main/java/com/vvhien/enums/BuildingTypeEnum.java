@@ -1,9 +1,9 @@
 package com.vvhien.enums;
 
 public enum BuildingTypeEnum {
-	TANG_TRET("Tầng trệt"),
+	TANG_TRET("Tầng trệt"),
 	NGUYEN_CAN("Nguyên căn"),
-	NOI_THAT("Nội thất");
+	NOI_THAT("Nội thất");
 	
 	private String value;
 	

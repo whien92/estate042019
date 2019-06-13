@@ -41,7 +41,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 	private Connection getConnection() {
 		String dbURL = "jdbc:mysql://localhost:3306/estate042019";
 		String username = "root";
-		String password = "1234@5678";
+		String password = "123456";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
