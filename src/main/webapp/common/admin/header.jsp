@@ -34,7 +34,7 @@
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a href="#" class="dropdown-toggle">
-                        Xin chào, [tên đăng nhập]
+                        Xin chào, Hien Vu
                     </a>
 	                <li class="light-blue dropdown-modal">
 	                    <a href="<c:url value='/logout'/>">

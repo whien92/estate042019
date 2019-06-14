@@ -64,7 +64,39 @@ pageEncoding="UTF-8"%>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Loại tòa nhà</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Diện tích thuê</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Phí dịch vụ</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Phí đỗ xe hơi</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Phí đỗ xe máy</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Phí điện</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Thời gian thuê</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Tên quản lý</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Số điên thoại quản lý</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
