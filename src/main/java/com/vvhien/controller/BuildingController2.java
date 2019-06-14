@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = {"/admin-building"})
-public class BuildingController extends HttpServlet{
+@WebServlet(urlPatterns = {"/admin-building-add"})
+public class BuildingController2 extends HttpServlet{
 	private static final long serialVersionUID = 2686801510274002166L;
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher rd = req.getRequestDispatcher("/views/building/list.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/views/building/add.jsp");
 		rd.forward(req, resp);
 	}
 	
