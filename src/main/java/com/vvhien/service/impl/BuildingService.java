@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
+import com.vvhien.dto.BuildingSearchDTO;
 import com.vvhien.entity.BuildingEntity;
 import com.vvhien.repository.IBuildingRepository;
 import com.vvhien.repository.impl.BuildingRepository;
@@ -70,6 +72,12 @@ public class BuildingService implements IBuildingService{
 			
 		}
 		return buildingDTOs;
+	}
+
+	@Override
+	public List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

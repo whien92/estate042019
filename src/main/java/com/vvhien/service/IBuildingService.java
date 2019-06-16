@@ -1,10 +1,10 @@
 package com.vvhien.service;
 
-import java.awt.print.Pageable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.dto.BuildingDTO;
 
 import paging.Pageble;
@@ -25,4 +25,5 @@ public interface IBuildingService {
 
 	List<BuildingDTO> findAll(Map<String, Object> properties, Pageble pageble, Object...where);
 
+	List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble);
 }

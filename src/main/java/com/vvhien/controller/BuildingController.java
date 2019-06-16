@@ -15,7 +15,18 @@ public class BuildingController extends HttpServlet{
 	private static final long serialVersionUID = 2686801510274002166L;
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		RequestDispatcher rd = req.getRequestDispatcher("/views/building/list.jsp");
+		String action = req.getParameter("action");
+		String url = "";
+
+		if(action.equals("LIST")) {
+			req.setAttribute("buildings", "");
+			url = "/views/building/list.jsp";
+		}
+		else if(action.equals("EDIT")) {
+			url = "/views/building/edit.jsp";
+		}
+		
+		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
 	}
 	

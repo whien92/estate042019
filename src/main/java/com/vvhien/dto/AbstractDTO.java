@@ -11,7 +11,14 @@ public class AbstractDTO {
 	private Timestamp modifiedDate;
 	private int maxPageItem = 10;
 	private int page = 1;
+	private String action;
 	
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
 	public int getPage() {
 		return page;
 	}

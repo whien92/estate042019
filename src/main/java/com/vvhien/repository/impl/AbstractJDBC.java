@@ -664,7 +664,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 
 				for (int j = 0; j < params.length; j++) {
 					if (values[j] instanceof String) {
-						result.append(" and LOWER(" + params[j] + ") LIKE '%" + values[j] + "%' ");
+						result.append(" and LOWER(" + params[j] + ") LIKE '%" + values[j].toString().toLowerCase() + "%' ");
 					} else if (values[j] instanceof Integer) {
 						result.append(" and " + params[j] + " = " + values[j] + " ");
 					}

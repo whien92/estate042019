@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@include file="/common/taglib.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -29,9 +30,9 @@ pageEncoding="UTF-8"%>
 						<div class="col-sm-9">
 							<select class="spInput custom-select" id="quan">
 							  <option selected>--Chọn quận--</option>
-							  <option value="1">Quận 12</option>
-							  <option value="2">Quận Gò Vấp</option>
-							  <option value="3">Quận Tân Bình</option>
+							  <option value="QUAN_1">Quận 1</option>
+							  <option value="QUAN_2">Quận 2</option>
+							  <option value="QUAN_3">Quận 3</option>
 							</select>
 						</div>
 					</div>
@@ -49,11 +50,11 @@ pageEncoding="UTF-8"%>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Số tầng hầm</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="number" class="spInput"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Diện tích sàn</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="number" class="spInput"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Hướng</span></div>
@@ -72,6 +73,10 @@ pageEncoding="UTF-8"%>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Giá thuê</span></div>
+						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Phí dịch vụ</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
@@ -84,7 +89,7 @@ pageEncoding="UTF-8"%>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
-						<div class="col-sm-3"><span class="splabel">Phí điện</span></div>
+						<div class="col-sm-3"><span class="splabel">Giá điện</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
@@ -98,6 +103,23 @@ pageEncoding="UTF-8"%>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Số điên thoại quản lý</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3"><span class="splabel">Lọi tòa nhà</span></div>
+						<div class="col-sm-9">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="TANG_TRET" id="tangtret"> 
+								<label class="form-check-label" for="TANG_TRET">Tầng trệt</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="NGUYEN_CAN" id="nguyencan"> 
+								<label class="form-check-label" for="NGUYEN_CAN">Nguyên căn</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="NOI_THAT" id="noithat"> 
+								<label class="form-check-label" for="NOI_THAT">Nội thất</label>
+							</div>
+						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Upload ảnh sản phẩm</span></div>
