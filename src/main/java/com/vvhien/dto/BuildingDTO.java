@@ -1,6 +1,6 @@
 package com.vvhien.dto;
 
-public class BuildingDTO extends AbstractDTO{
+public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	private String name;
 	private String ward;
 	private String street;

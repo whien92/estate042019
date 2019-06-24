@@ -1,6 +1,6 @@
 package com.vvhien.dto;
 
-public class UserDTO extends AbstractDTO{
+public class UserDTO extends AbstractDTO<UserDTO>{
 
 	private String userName;
 
