@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="buildingURL" value="/admin-building?action=LIST"/>
+<c:url var="buildingURL" value="/admin-building/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -49,7 +49,7 @@
 													<label>Quận hiện có</label>
 													<div class="fg-line">
 														<select class="custom-select" id="quan" name="district">
-															<option selected>--Chọn quận--</option>
+															<option>--Chọn quận--</option>
 															<option value="QUAN_1">Quận 12</option>
 															<option value="QUAN_2">Quận Gò Vấp</option>
 															<option value="QUAN_3">Quận Tân Bình</option>
@@ -59,13 +59,13 @@
 												<div class="col-sm-4">
 													<label>Phường</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="ward" value="${model.ward}"/>
 													</div>
 												</div>
 												<div class="col-sm-4">
 													<label>Đường</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="ward" value="${model.street}"/>
 													</div>
 												</div>
 											</div>
@@ -73,25 +73,25 @@
 												<div class="col-sm-3">
 													<label>Diện tích sàn</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm" />
+														<input type="number" class="form-control input-sm" name="buildingArea" value="${model.buildingArea}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Số tầng hầm</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm" />
+														<input type="number" class="form-control input-sm" name="numberOfBasement" value="${model.numberOfBasement}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Hướng</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="direction" value="${model.direction}"  />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Hạng</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="level" value="${model.level}"  />
 													</div>
 												</div>
 											</div>
@@ -99,25 +99,25 @@
 												<div class="col-sm-3">
 													<label>Diện tích từ</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm" />
+														<input type="number" class="form-control input-sm" name="areaRentFrom" value="${model.areaRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Diện tích đến</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm" />
+														<input type="number" class="form-control input-sm" name="areaRenTo" value="${model.areaRentTo}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Giá thuê từ</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="costRentFrom" value="${model.costRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Giá thuê đến</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="costRentTo" value="${model.costRentTo}" />
 													</div>
 												</div>
 											</div>
@@ -125,13 +125,13 @@
 												<div class="col-sm-4">
 													<label>Tên Quản lý</label>
 													<div class="fg-line">
-														<input type="text" class="form-control input-sm" />
+														<input type="text" class="form-control input-sm" name="managerName" value="${model.managerName}" />
 													</div>
 												</div>
 												<div class="col-sm-4">
 													<label>Điện thoại quản lý</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm" />
+														<input type="number" class="form-control input-sm" name="managerPhone" value="${model.managerPhone}"  />
 													</div>
 												</div>
 												<div class="col-sm-4">
@@ -151,26 +151,21 @@
 													<label>Loại tòa nhà</label>
 													<div class="fg-line">
 														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="TANG_TRET"
-																id="defaultCheck1"> <label
-																class="form-check-label" for="defaultCheck1">Tầng
-																trệt</label>
+															<input class="form-check-input" type="checkbox" value="TANG_TRET" id="defaultCheck1"> 
+															 <label class="form-check-label" name="buildingTypes">Tầng trệt</label>
 														</div>
 														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="NGUYEN_CAN"
-																id="defaultCheck2"> <label
-																class="form-check-label" for="defaultCheck2"> Nguyên căn </label>
+															<input class="form-check-input" type="checkbox" value="NGUYEN_CAN" id="defaultCheck2">
+															<label class="form-check-label" name="buildingTypes"> Nguyên căn </label>
 														</div>
 														<div class="form-check">
-															<input class="form-check-input" type="checkbox" value="NOI_THAT"
-																id="defaultCheck3"> <label
-																class="form-check-label" for="defaultCheck3"> Nội
-																thất </label>
+															<input class="form-check-input" type="checkbox" value="NOI_THAT" id="defaultCheck3"> 
+															<label class="form-check-label" name="buildingTypes"> Nội thất </label>
 														</div>
 													</div>
 												</div>
 											</div>
-
+											<input type="hidden" name="action" value="LIST"/>
 											<button type="submit" class="btn btn-success" id="btnSearch">
 												Tìm kiếm <i class="fa fa-arrow-right"></i>
 											</button>

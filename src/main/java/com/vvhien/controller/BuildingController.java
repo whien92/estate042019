@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.service.IBuildingService;
 import com.vvhien.service.impl.BuildingService;
+import com.vvhien.utils.FormUtil;
 
 @WebServlet(urlPatterns = {"/admin-building"})
 public class BuildingController extends HttpServlet{
@@ -25,8 +26,9 @@ public class BuildingController extends HttpServlet{
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		BuildingDTO model = new BuildingDTO();
+		BuildingDTO model = FormUtil.toModel(BuildingDTO.class, req);
 		String action = req.getParameter("action");
+		String name = req.getParameter("name");
 		String url = "";
 
 		if(action.equals("LIST")) {
