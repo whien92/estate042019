@@ -37,7 +37,7 @@ pageEncoding="UTF-8"%>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-3"><span class="splabel">Phường</span></div>
+						<div class="col-sm-3"><span class="splabel">Phườnggggg</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">

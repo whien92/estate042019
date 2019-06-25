@@ -28,7 +28,6 @@ public class BuildingController extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		BuildingDTO model = FormUtil.toModel(BuildingDTO.class, req);
 		String action = req.getParameter("action");
-		String name = req.getParameter("name");
 		String url = "";
 
 		if(action.equals("LIST")) {
@@ -36,7 +35,7 @@ public class BuildingController extends HttpServlet{
 			url = "/views/building/list.jsp";
 			
 			//req.setAttribute("buildings", buildingService.findAll(builder, pageble));
-			//model.setListResults(listResults);
+			model.setListResults(buildingService.findAll(builder, pageble));
 		}
 		else if(action.equals("EDIT")) {
 			url = "/views/building/edit.jsp";
