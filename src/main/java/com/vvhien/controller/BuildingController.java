@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.dto.BuildingDTO;
+import com.vvhien.paging.PageRequest;
+import com.vvhien.paging.Pageble;
 import com.vvhien.service.IBuildingService;
 import com.vvhien.service.impl.BuildingService;
 import com.vvhien.utils.FormUtil;
@@ -22,7 +25,9 @@ public class BuildingController extends HttpServlet{
 	private IBuildingService buildingService;
 	
 	public BuildingController() {
-		buildingService = new BuildingService();
+		if(buildingService == null) {
+			buildingService = new BuildingService();
+		}
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,7 +39,8 @@ public class BuildingController extends HttpServlet{
 			req.setAttribute("buildings", "");
 			url = "/views/building/list.jsp";
 			
-			//req.setAttribute("buildings", buildingService.findAll(builder, pageble));
+			Pageble pageble = new PageRequest(null, null, null);
+			BuildingSearchBuilder builder = initBuildingBulder(model);
 			model.setListResults(buildingService.findAll(builder, pageble));
 		}
 		else if(action.equals("EDIT")) {
@@ -46,6 +52,19 @@ public class BuildingController extends HttpServlet{
 		rd.forward(req, resp);
 	}
 	
+	private BuildingSearchBuilder initBuildingBulder(BuildingDTO model) {
+		BuildingSearchBuilder builder = new BuildingSearchBuilder.Builder()
+				.setName(model.getName())
+				.setWard(model.getWard())
+				.setStreet(model.getStreet())
+				.setNumberOfBasement(model.getNumberOfBasement())
+				.setCostRentFrom(model.getCostRentFrom())
+				.setCostRentTo(model.getCostRentFrom())
+				.setAreaRentFrom(model.getAreaRentFrom())
+				.setAreaRentTo(model.getAreaRentTo()).build();
+		return builder;
+	}
+
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 	}

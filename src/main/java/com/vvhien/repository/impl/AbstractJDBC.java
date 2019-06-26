@@ -21,10 +21,10 @@ import com.vvhien.annotation.Table;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
 import com.vvhien.mapper.ResultSetMapper;
+import com.vvhien.paging.Pageble;
+import com.vvhien.paging.Sorter;
 import com.vvhien.repository.GenericJDBC;
 
-import paging.Pageble;
-import paging.Sorter;
 
 public class AbstractJDBC<T> implements GenericJDBC<T> {
 

@@ -1,6 +1,6 @@
-package paging;
+package com.vvhien.paging;
 
-public interface Pageble {
+public interface Pageble { //2506
 	Integer getPage();
 	Integer getOffset();
 	Integer getLimit();

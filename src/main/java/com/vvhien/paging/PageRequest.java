@@ -1,12 +1,10 @@
-package paging;
+package com.vvhien.paging;
 
-public class PageRequest implements Pageble {  
-	private Integer page;
-	private Integer maxPageItem;
+public class PageRequest implements Pageble {//2506
+	Integer page;
+	Integer maxPageItem;
 	private Sorter sorter;
 	
-	
-
 	public PageRequest(Integer page, Integer maxPageItem, Sorter sorter) {
 		this.page = page;
 		this.maxPageItem = maxPageItem;
@@ -20,8 +18,8 @@ public class PageRequest implements Pageble {
 
 	@Override
 	public Integer getOffset() {
-		if(page != null & maxPageItem != null) {
-			return (page-1) * maxPageItem;
+		if(page!= null && maxPageItem != null) {
+			return (page - 1) * maxPageItem;
 		}
 		return null;
 	}

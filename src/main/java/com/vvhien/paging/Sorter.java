@@ -1,10 +1,10 @@
-package paging;
+package com.vvhien.paging;
 
-public class Sorter {
+public class Sorter {//2506
 	private String sortName;
 	private String sortBy;
-	 
 	public Sorter(String sortName, String sortBy) {
+		super();
 		this.sortName = sortName;
 		this.sortBy = sortBy;
 	}

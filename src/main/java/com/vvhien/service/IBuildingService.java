@@ -6,8 +6,7 @@ import java.util.Map;
 
 import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.dto.BuildingDTO;
-
-import paging.Pageble;
+import com.vvhien.paging.Pageble;
 
 public interface IBuildingService {
 	

@@ -103,14 +103,14 @@
 												<div class="col-sm-3">
 													<label>Diện tích từ</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm"
+														<input type="text" class="form-control input-sm"
 															name="areaRentFrom" value="${model.areaRentFrom}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Diện tích đến</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm"
+														<input type="text" class="form-control input-sm"
 															name="areaRenTo" value="${model.areaRentTo}" />
 													</div>
 												</div>

@@ -10,14 +10,17 @@ import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
+import com.vvhien.paging.Pageble;
 import com.vvhien.repository.IBuildingRepository;
 import com.vvhien.repository.impl.BuildingRepository;
 import com.vvhien.service.IBuildingService;
 
-import paging.Pageble;
-
 public class BuildingService implements IBuildingService{
 	private IBuildingRepository buildingRepository;
+	
+	/*public static BuildingService getInstance() {
+		return new BuildingService();
+	}*/
 	
 	public BuildingService() {
 		buildingRepository = new BuildingRepository();
@@ -74,7 +77,7 @@ public class BuildingService implements IBuildingService{
 	}
 	@Override
 	public List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble) {
-		// TODO Auto-generated method stub
+		Map<String, Object> mapSearch = buildMapSearch();
 		return null;
 	}
 

@@ -55,6 +55,8 @@ CREATE TABLE building (
 	payment VARCHAR(255) NULL,
 	timerent VARCHAR(255) NULL,
 	timedecorator VARCHAR(255) NULL,
+	direction VARCHAR(45) NULL,
+	level VARCHAR(45) NULL,
 	managername VARCHAR(255) NULL,
 	managerphone VARCHAR(255) NULL,
 	type TEXT NULL,
