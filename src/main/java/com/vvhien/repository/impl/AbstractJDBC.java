@@ -650,7 +650,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			Table table = zClass.getAnnotation(Table.class);
 			tableName = table.name();
 
-			StringBuilder result = new StringBuilder("SELECT * FROM " + tableName + " WHERE  1  = 1");
+			StringBuilder result = new StringBuilder("SELECT * FROM " + tableName + " A WHERE  1  = 1");
 			if (properties != null && properties.size() > 0) {
 				String[] params = new String[properties.size()];
 				Object[] values = new Object[properties.size()];

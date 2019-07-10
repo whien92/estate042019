@@ -1,19 +1,13 @@
 package com.vvhien.service.impl;
 
-import java.awt.event.ItemEvent;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.converter.BuildingConverter;
@@ -28,17 +22,17 @@ public class BuildingService implements IBuildingService{
 	private IBuildingRepository buildingRepository;
 	private BuildingConverter buildingConverter;
 	
-	/*public static BuildingService getInstance() {
-		return new BuildingService();
-	}*/
-	
 	public BuildingService() {
-		buildingRepository = new BuildingRepository();
-		buildingConverter = new BuildingConverter();
+		if(buildingRepository == null) {
+			buildingRepository = new BuildingRepository();
+		}
+		if(buildingConverter == null) {
+			buildingConverter = new BuildingConverter();
+		}
 	}
+	 
 	@Override
 	public BuildingDTO save(BuildingDTO buildingDTO) {
-		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingEntity buildingEntity = buildingConverter.converToEntity(buildingDTO);
 		buildingEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 		Long id = buildingRepository.insert(buildingEntity);
@@ -47,7 +41,6 @@ public class BuildingService implements IBuildingService{
 	
 	@Override
 	public void update(BuildingDTO buildingDTO) {
-		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingEntity buildingEntity = buildingConverter.converToEntity(buildingDTO);
 		buildingRepository.update(buildingEntity);
 	}
@@ -58,7 +51,6 @@ public class BuildingService implements IBuildingService{
 	}
 	@Override
 	public BuildingDTO findById(Long id) {	
-		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingRepository.findById(id));
 		return buildingDTO;
 	}
@@ -69,54 +61,30 @@ public class BuildingService implements IBuildingService{
 	}
 	@Override
 	public BuildingDTO findById1(Long id) {
-		BuildingConverter buildingConverter = new BuildingConverter();
 		BuildingDTO buildingDTO = buildingConverter.convertToDTO(buildingRepository.findById1(id));
 		return buildingDTO;
 	}
 
 	@Override
-	public List<BuildingDTO> findAll(Map<String, Object> properties, Pageble pageble, Object...where) {
-		BuildingConverter buildingConverter = new BuildingConverter();
-		
+	public List<BuildingDTO> findAll(Map<String, Object> properties, Pageble pageble, Object...where) {	
 		List<BuildingDTO> buildingDTOs = new ArrayList<>();
 		List<BuildingEntity> buildingEntities= buildingRepository.findAll(properties, pageble, where);
 		for (int i = 0; i < buildingEntities.size(); i++) {
 			buildingDTOs.add(buildingConverter.convertToDTO(buildingEntities.get(i)));
 			
 		}
-		return buildingDTOs;
+		return buildingDTOs; 
 	}
 	@Override
 	public List<BuildingDTO> findAll(BuildingSearchBuilder builder, Pageble pageble) {
-		Map<String, Object> properties = buildMapSearch(builder);
-		List<BuildingEntity> buildingEntities =  buildingRepository.findAll(properties, pageble);
+		List<BuildingEntity> buildingEntities =  buildingRepository.findAll(builder, pageble);
 		List<BuildingDTO> results = buildingEntities.stream()
 				.map(item -> buildingConverter.convertToDTO(item)).collect(Collectors.toList());
 		return results;
 	}
 	
 	
-	private Map<String, Object> buildMapSearch(BuildingSearchBuilder builder) {
-		Map<String, Object> result = new HashMap<>();
-		
-		try {
-			Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
-			for(Field field : fields) {
-				if(!field.getName().equals("buildingTypes") && 
-					!field.getName().startsWith("costRent") && 
-					!field.getName().startsWith("areaRent")) {
-					 field.setAccessible(true);
-					 if(field.get(builder) != null) {
-						 result.put(field.getName().toLowerCase(), field.get(builder));
-					 }
-				}
-			}	
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		
-		return result ;
-	}
+	
 	/*private Object getValue(Field field, BuildingSearchBuilder builder) {
 		Object result = null;
 		Method getter = getGetter(field, builder);
