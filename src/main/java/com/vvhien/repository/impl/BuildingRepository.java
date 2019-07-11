@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.entity.BuildingEntity;
 import com.vvhien.paging.Pageble;
@@ -18,22 +20,23 @@ public class BuildingRepository extends AbstractJDBC<BuildingEntity> implements 
 		Map<String, Object> properties = buildMapSearch(builder);
 		StringBuilder whereClause = new StringBuilder();
 		
-		if(builder.getCostRentFrom() != null) {
+		if(StringUtils.isNotBlank(builder.getCostRentFrom())) {
 			whereClause.append(" AND costrent >= " + builder.getCostRentFrom());
 		}
 		
-		if(builder.getCostRentTo() != null) {
+		if(StringUtils.isNotBlank(builder.getCostRentTo())) {
 			whereClause.append(" AND costrent >= " + builder.getCostRentTo());
 		}
 		
-		if(builder.getAreaRentFrom() != null || builder.getAreaRentTo() != null) {
-			whereClause.append(" AND EXISTS (SELECT * FROM rentarea WHERE (ra.buildingId = A.id");
-			if(builder.getAreaRentFrom() != null) {
+		if(StringUtils.isNotBlank(builder.getAreaRentFrom()) || StringUtils.isNotBlank(builder.getAreaRentTo())) {
+			whereClause.append(" AND EXISTS (SELECT * FROM rentarea ra WHERE (ra.buildingId = A.id");
+			if(StringUtils.isNotBlank(builder.getAreaRentFrom())) {
 				whereClause.append(" AND ra.value >= '" + builder.getAreaRentFrom() + "'");
 			}
-			if(builder.getAreaRentTo() != null) {
+			if(StringUtils.isNotBlank(builder.getAreaRentTo())) {
 				whereClause.append(" AND ra.value <= '" + builder.getAreaRentTo() + "'");
 			}
+			whereClause.append(" ))");	
 		}
 		
 		if(builder.getBuildingTypes().length > 0) {

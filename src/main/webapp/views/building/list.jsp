@@ -47,10 +47,10 @@
 													<label>Quận hiện có</label>
 													<div class="fg-line">
 														<select class="custom-select" id="quan" name="district">
-															<option>--Chọn quận--</option>
-															<option value="QUAN_1">Quận 12</option>
-															<option value="QUAN_2">Quận Gò Vấp</option>
-															<option value="QUAN_3">Quận Tân Bình</option>
+														<option value="">Chọn quận</option>
+														<c:forEach var="district" items="${districts}">
+															<option value="${district.key}">${district.value}</option>
+														</c:forEach>
 														</select>
 													</div>
 												</div>
@@ -81,7 +81,7 @@
 													<label>Số tầng hầm</label>
 													<div class="fg-line">
 														<input type="number" class="form-control input-sm"
-															name="numberOfBasement" value="${model.numberOfBasement}" />
+															name="numberOfBasement" value="" />
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -111,7 +111,7 @@
 													<label>Diện tích đến</label>
 													<div class="fg-line">
 														<input type="text" class="form-control input-sm"
-															name="areaRenTo" value="${model.areaRentTo}" />
+															name="areaRentTo" value="${model.areaRentTo}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -160,16 +160,11 @@
 												<div class="col-sm-12">
 													<label>Loại tòa nhà</label>
 													<div class="fg-line">
-														<input class="form-check-input" type="checkbox"
-															name="buildingTypes" value="TANG_TRET"> <label
-															class="form-check-label">Tầng trệt</label> <input
-															class="form-check-input" type="checkbox"
-															name="buildingTypes" value="NGUYEN_CAN"> <label
-															class="form-check-label"> Nguyên căn </label> <input
-															class="form-check-input" type="checkbox"
-															name="buildingTypes" value="NOI_THAT"> <label
-															class="form-check-label"> Nội thất </label>
-
+														<c:forEach var="buildingType" items="${buildingTypes}">
+														<label class="form-check-label">${buildingType.value}</label>
+														<input class="form-check-input" type="checkbox" name="buildingTypes" value="${buildingType.key}"> 
+															
+														</c:forEach>
 													</div>
 												</div>
 											</div>
@@ -219,49 +214,27 @@
 							<caption>List of users</caption>
 							<thead class="thead-dark|thead-light">
 								<tr>
-									<th scope="col">#</th>
-									<th scope="col">Ngày</th>
 									<th scope="col">Tên sản phẩm</th>
 									<th scope="col">Địa chỉ</th>
+									<th scope="col">Giá thuê</th>
+									<th scope="col">Diện tích thuê</th>
+									<th scope="col">Loại tòa nhà</th>
 									<th scope="col">Tên quản lý</th>
 									<th scope="col">Số điện thoại</th>
-									<th scope="col">DT sàn</th>
-									<th scope="col">DT trống</th>
-									<th scope="col">Giá thuê</th>
-									<th scope="col">Phí dịch vụ</th>
-									<th scope="col">Phí môi giới</th>
-									<th scope="col">Thao tác</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-								</tr>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-									<td>Mark</td>
-									<td>Otto</td>
-								</tr>
+								<c:forEach var="item" items="${model.listResults}">
+									<tr>
+										<td>${item.name}</td>
+										<td>${item.address}</td>
+										<td>${item.costRent}</td>
+										<td>${item.rentArea}</td>
+										<td>${item.type}</td>
+										<td>${item.managerName}</td>
+										<td>${item.managerPhone}</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

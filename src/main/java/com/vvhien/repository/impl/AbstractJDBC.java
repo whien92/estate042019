@@ -668,6 +668,9 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 					} else if (values[j] instanceof Integer) {
 						result.append(" and " + params[j] + " = " + values[j] + " ");
 					}
+					else if (values[j] instanceof Long) {
+						result.append(" and " + params[j] + " = " + values[j] + " ");
+					}
 				}
 			}
 			return result;

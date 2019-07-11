@@ -3,6 +3,7 @@
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,20 +16,21 @@ import com.vvhien.dto.BuildingDTO;
 import com.vvhien.paging.PageRequest;
 import com.vvhien.paging.Pageble;
 import com.vvhien.service.IBuildingService;
-import com.vvhien.service.impl.BuildingService;
+import com.vvhien.utils.DataUtils;
 import com.vvhien.utils.FormUtil;
 
 @WebServlet(urlPatterns = {"/admin-building"})
 public class BuildingController extends HttpServlet{
 	private static final long serialVersionUID = 2686801510274002166L;
 	
+	@Inject
 	private IBuildingService buildingService;
 	
-	public BuildingController() {
+	/*public BuildingController() {
 		if(buildingService == null) {
 			buildingService = new BuildingService();
 		}
-	}
+	}*/
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		BuildingDTO model = FormUtil.toModel(BuildingDTO.class, req);
@@ -47,6 +49,8 @@ public class BuildingController extends HttpServlet{
 			url = "/views/building/edit.jsp";
 		}
 		
+		req.setAttribute("districts", DataUtils.getBuildingTypes());
+		req.setAttribute("buildingTypes", DataUtils.getBuildingTypes());
 		req.setAttribute("model", model);
 		RequestDispatcher rd = req.getRequestDispatcher(url);
 		rd.forward(req, resp);
@@ -57,11 +61,13 @@ public class BuildingController extends HttpServlet{
 				.setName(model.getName())
 				.setWard(model.getWard())
 				.setStreet(model.getStreet())
-				.setNumberOfBasement(model.getNumberOfBasement())
+				//.setNumberOfBasement(model.getNumberOfBasement())
 				.setCostRentFrom(model.getCostRentFrom())
-				.setCostRentTo(model.getCostRentFrom())
+				.setCostRentTo(model.getCostRentTo())
 				.setAreaRentFrom(model.getAreaRentFrom())
-				.setAreaRentTo(model.getAreaRentTo()).build();
+				.setAreaRentTo(model.getAreaRentTo())
+				.setBuildingTypes(model.getBuildingTypes())
+				.build();
 		return builder;
 	}
 

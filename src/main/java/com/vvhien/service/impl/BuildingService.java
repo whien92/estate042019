@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
@@ -19,7 +21,10 @@ import com.vvhien.repository.impl.BuildingRepository;
 import com.vvhien.service.IBuildingService;
 
 public class BuildingService implements IBuildingService{
+	@Inject
 	private IBuildingRepository buildingRepository;
+	
+	@Inject
 	private BuildingConverter buildingConverter;
 	
 	public BuildingService() {
