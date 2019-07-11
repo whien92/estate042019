@@ -49,7 +49,7 @@ public class BuildingController extends HttpServlet{
 			url = "/views/building/edit.jsp";
 		}
 		
-		req.setAttribute("districts", DataUtils.getBuildingTypes());
+		req.setAttribute("districts", DataUtils.getDistricts());
 		req.setAttribute("buildingTypes", DataUtils.getBuildingTypes());
 		req.setAttribute("model", model);
 		RequestDispatcher rd = req.getRequestDispatcher(url);
@@ -61,7 +61,9 @@ public class BuildingController extends HttpServlet{
 				.setName(model.getName())
 				.setWard(model.getWard())
 				.setStreet(model.getStreet())
-				//.setNumberOfBasement(model.getNumberOfBasement())
+				.setDistrict(model.getDistrict())
+				.setNumberOfBasement(model.getNumberOfBasement())
+				.setBuildingArea(model.getBuildingArea())
 				.setCostRentFrom(model.getCostRentFrom())
 				.setCostRentTo(model.getCostRentTo())
 				.setAreaRentFrom(model.getAreaRentFrom())

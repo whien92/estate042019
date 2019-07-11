@@ -4,7 +4,9 @@ public class BuildingSearchBuilder {
 	private String name;
 	private String ward;
 	private String street;
-	//private Integer numberOfBasement;
+	private String district;
+	private String numberOfBasement;
+	private String buildingArea;
 	private String[] buildingTypes = new String[] {};
 	private String costRentFrom;
 	private String costRentTo;
@@ -15,12 +17,14 @@ public class BuildingSearchBuilder {
 		this.name = builder.name;
 		this.ward = builder.ward;
 		this.street = builder.street;
-		//this.numberOfBasement = builder.numberOfBasement;
+		this.district = builder.district;
+		this.numberOfBasement = builder.numberOfBasement;
 		this.costRentFrom = builder.costRentFrom;
 		this.costRentTo = builder.costRentTo;
 		this.areaRentFrom = builder.areaRentFrom;
 		this.areaRentTo = builder.areaRentTo;
 		this.buildingTypes = builder.buildingTypes;
+		this.buildingArea = builder.buildingArea;
 	}
 
 	public String getName() {
@@ -34,10 +38,20 @@ public class BuildingSearchBuilder {
 	public String getStreet() {
 		return street;
 	}
+	
 
-	/*public Integer getNumberOfBasement() {
+	public String getNumberOfBasement() {
 		return numberOfBasement;
-	}*/
+	}
+	
+
+	public String getBuildingArea() {
+		return buildingArea;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
 
 	public String[] getBuildingTypes() {
 		return buildingTypes;
@@ -63,7 +77,9 @@ public class BuildingSearchBuilder {
 		private String name;
 		private String ward;
 		private String street;
-		//private Integer numberOfBasement;
+		private String district;
+		private String numberOfBasement;
+		private String buildingArea;
 		private String[] buildingTypes = new String[] {};
 		private String costRentFrom;
 		private String costRentTo;
@@ -85,6 +101,11 @@ public class BuildingSearchBuilder {
 			return this;
 		}
 
+		public Builder setDistrict(String district) {
+			this.district = district;
+			return this;
+		}
+		
 		public Builder setBuildingTypes(String[] buildingTypes) {
 			this.buildingTypes = buildingTypes;
 			return this;
@@ -110,14 +131,20 @@ public class BuildingSearchBuilder {
 			return this;
 		}
 
-		/*public Builder setNumberOfBasement(Integer numberOfBasement) {
+		public Builder setNumberOfBasement(String numberOfBasement) {
 			this.numberOfBasement = numberOfBasement;
 			return this;
-		}*/
+		}
 
 		public BuildingSearchBuilder build() {
 			return new BuildingSearchBuilder(this);
 		}
+
+		public Builder setBuildingArea(String buildingArea) {
+			this.buildingArea = buildingArea;
+			return this;
+		}
+
 	}
 
 }

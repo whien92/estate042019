@@ -17,9 +17,11 @@ pageEncoding="UTF-8"%>
 					</ul>	
 				</div> <!-- /.breadcrumbs -->
 				<div class="page-content f-addsp">
+					<!--  FORMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM -->
+					<form id="fEdit" >
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Tên sản phẩm</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="name" value="${model.name}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Người quản lý sản phẩm</span></div>
@@ -28,21 +30,21 @@ pageEncoding="UTF-8"%>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Quận</span></div>
 						<div class="col-sm-9">
-							<select class="spInput custom-select" id="quan">
-							  <option selected>--Chọn quận--</option>
-							  <option value="QUAN_1">Quận 1</option>
-							  <option value="QUAN_2">Quận 2</option>
-							  <option value="QUAN_3">Quận 3</option>
+							<select class="custom-select" id="quan" name="district">
+							<option value="">Chọn quận</option>
+							<c:forEach var="district" items="${districts}">
+								<option value="${district.key}" ${item.key == model.district ? "selected" : ""}>${district.value}</option>
+							</c:forEach>
 							</select>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Phườnggggg</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="ward" value="${model.ward}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Đường</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="district" value="${model.district}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Kết cấu</span></div>
@@ -50,33 +52,29 @@ pageEncoding="UTF-8"%>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Số tầng hầm</span></div>
-						<div class="col-sm-9"><input type="number" class="spInput"/></div>
+						<div class="col-sm-9"><input type="number" class="spInput" name="numberOfBasement" value="${model.numberOfBasement}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Diện tích sàn</span></div>
-						<div class="col-sm-9"><input type="number" class="spInput"/></div>
+						<div class="col-sm-9"><input type="number" class="spInput" name="buildingArea" value="${model.buildingArea}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Hướng</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="direction" value="${model.direction}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Hạng</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
-					</div>
-					<div class="row">
-						<div class="col-sm-3"><span class="splabel">Loại tòa nhà</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
-					</div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="level" value="${model.level}"/></div>
+					</div>	
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Diện tích thuê</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="rentArea" value="${model.rentArea}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Giá thuê</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="costRent" value="${model.costRent}"/></div>
 					</div>
-					<div class="row">
+<!-- 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Phí dịch vụ</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
@@ -86,39 +84,33 @@ pageEncoding="UTF-8"%>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Phí đỗ xe máy</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
-					</div>
-					<div class="row">
+						<div class="col-sm-9"><input type="text" class="spInput"/></div> 
+					</div> -->
+					<!-- <div class="row">
 						<div class="col-sm-3"><span class="splabel">Giá điện</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Thời gian thuê</span></div>
 						<div class="col-sm-9"><input type="text" class="spInput"/></div>
-					</div>
+					</div> -->
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Tên quản lý</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="managerName" value="${model.managerName}"/></div>
 					</div>
 					<div class="row">
 						<div class="col-sm-3"><span class="splabel">Số điên thoại quản lý</span></div>
-						<div class="col-sm-9"><input type="text" class="spInput"/></div>
+						<div class="col-sm-9"><input type="text" class="spInput" name="managerPhone" value="${model.managerPhone}"/></div>
 					</div>
 					<div class="row">
-						<div class="col-sm-3"><span class="splabel">Lọi tòa nhà</span></div>
+						<div class="col-sm-3"><span class="splabel">Loại tòa nhà</span></div>
 						<div class="col-sm-9">
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="TANG_TRET" id="tangtret"> 
-								<label class="form-check-label" for="TANG_TRET">Tầng trệt</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="NGUYEN_CAN" id="nguyencan"> 
-								<label class="form-check-label" for="NGUYEN_CAN">Nguyên căn</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="NOI_THAT" id="noithat"> 
-								<label class="form-check-label" for="NOI_THAT">Nội thất</label>
-							</div>
+							<c:forEach var="buildingType" items="${buildingTypes}">
+							<label class="form-check-label">${buildingType.value}</label>
+							<input class="form-check-input" type="checkbox" name="buildingTypes" value="${buildingType.key}" 
+									${fn:contains(fn:join(model.buildingTypes, ','), item.key) ? "checked" : ""}> 
+								
+							</c:forEach>
 						</div>
 					</div>
 					<div class="row">
@@ -129,9 +121,15 @@ pageEncoding="UTF-8"%>
 						  </div>
 						</div>
 					</div>
+					</form>
 					<div class="row text-center btn-addsp">
 						<button class="btn btn-light">Hủy bỏ</button>
-						<button class="btn btn-success">Thêm sản phẩm</button>
+						<c:if test = "${empty model.id }">
+							<button class="btn btn-success">Thêm tòa nhà</button>
+						</c:if>
+						<c:if test = "${not empty model.id }">
+							<button class="btn btn-success">Cập nhật tòa nhà</button>
+						</c:if>
 					</div>
 						
 				</div> <!-- page-content -->

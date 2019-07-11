@@ -19,3 +19,7 @@ UPDATE `estate042019`.`building` SET `type` = 'TANG_TRET,NGUYEN_CAN' WHERE (`id`
 UPDATE `estate042019`.`building` SET `type` = 'NGUYEN_CAN' WHERE (`id` = '5');
 UPDATE `estate042019`.`building` SET `type` = 'NOI_THAT' WHERE (`id` = '6');
 UPDATE `estate042019`.`building` SET `type` = 'TANG_TRET,NGUYEN_CAN,NOI_THAT' WHERE (`id` = '7');
+UPDATE `estate042019`.`building` SET `ward` = 'Phường 3', `managername` = 'Hiền', `managerphone` = '0933537245' WHERE (`id` = '5');
+UPDATE `estate042019`.`building` SET `ward` = 'Phường 9', `managername` = 'Khang', `managerphone` = '0362266246' WHERE (`id` = '6');
+UPDATE `estate042019`.`building` SET `ward` = 'Phường 5', `managername` = 'Bảo', `managerphone` = '0933537245' WHERE (`id` = '7');
+UPDATE `estate042019`.`building` SET `managername` = 'Thiên', `managerphone` = '038600722' WHERE (`id` = '4');

@@ -49,7 +49,7 @@
 														<select class="custom-select" id="quan" name="district">
 														<option value="">Chọn quận</option>
 														<c:forEach var="district" items="${districts}">
-															<option value="${district.key}">${district.value}</option>
+															<option value="${district.key}" ${item.key == model.district ? "selected" : ""}>${district.value}</option>
 														</c:forEach>
 														</select>
 													</div>
@@ -73,15 +73,15 @@
 												<div class="col-sm-3">
 													<label>Diện tích sàn</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm"
+														<input type="text" class="form-control input-sm"
 															name="buildingArea" value="${model.buildingArea}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<label>Số tầng hầm</label>
 													<div class="fg-line">
-														<input type="number" class="form-control input-sm"
-															name="numberOfBasement" value="" />
+														<input type="text" class="form-control input-sm"
+															name="numberOfBasement" value="${model.numberOfBasement}" />
 													</div>
 												</div>
 												<div class="col-sm-3">
@@ -162,7 +162,8 @@
 													<div class="fg-line">
 														<c:forEach var="buildingType" items="${buildingTypes}">
 														<label class="form-check-label">${buildingType.value}</label>
-														<input class="form-check-input" type="checkbox" name="buildingTypes" value="${buildingType.key}"> 
+														<input class="form-check-input" type="checkbox" name="buildingTypes" value="${buildingType.key}" 
+																${fn:contains(fn:join(model.buildingTypes, ','), item.key) ? "checked" : ""}> 
 															
 														</c:forEach>
 													</div>
@@ -218,6 +219,8 @@
 									<th scope="col">Địa chỉ</th>
 									<th scope="col">Giá thuê</th>
 									<th scope="col">Diện tích thuê</th>
+									<th scope="col">Diện tích sàn</th>
+									<th scope="col">Số tầng hầm</th>
 									<th scope="col">Loại tòa nhà</th>
 									<th scope="col">Tên quản lý</th>
 									<th scope="col">Số điện thoại</th>
@@ -230,6 +233,8 @@
 										<td>${item.address}</td>
 										<td>${item.costRent}</td>
 										<td>${item.rentArea}</td>
+										<td>${item.buildingArea}</td>
+										<td>${item.numberOfBasement}</td>
 										<td>${item.type}</td>
 										<td>${item.managerName}</td>
 										<td>${item.managerPhone}</td>

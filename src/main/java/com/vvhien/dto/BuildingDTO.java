@@ -1,14 +1,12 @@
 package com.vvhien.dto;
 
-import com.vvhien.annotation.Column;
-
 public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	private String name;
 	private String ward;
 	private String street;
 	private String structure;
-	//private Integer numberOfBasement;
-	private Integer buildingArea;
+	private String numberOfBasement;
+	private String buildingArea;
 	private String district;
 	private Integer costRent;
 	private String costDescription;
@@ -46,7 +44,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 	}
 
 	public String getAddress() {
-		return this.street + ", " + this.ward;
+		return this.street + ", " + this.ward + ", " + this.district;
 	}
 
 	public String getDirection() {
@@ -129,19 +127,19 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO>{
 		this.structure = structure;
 	}
 
-	/*public Integer getNumberOfBasement() {
+	public String getNumberOfBasement() {
 		return numberOfBasement;
 	}
 
-	public void setNumberOfBasement(Integer numberOfBasement) {
+	public void setNumberOfBasement(String numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
-	}*/
+	}
 
-	public Integer getBuildingArea() {
+	public String getBuildingArea() {
 		return buildingArea;
 	}
 
-	public void setBuildingArea(Integer buildingArea) {
+	public void setBuildingArea(String buildingArea) {
 		this.buildingArea = buildingArea;
 	}
 
