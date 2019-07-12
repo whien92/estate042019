@@ -677,4 +677,49 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 		}
 		return null;	
 	}
+
+	@Override
+	public void deleteByproperty(String where) {
+		Connection con = null;
+		Statement statement = null;
+		try {
+			con = getConnection();
+			con.setAutoCommit(false);
+			String sql = createSQLDeleteByPro(where);
+			System.out.println("Sql delete: " + sql);
+			statement = con.prepareStatement(sql);
+
+			if (con != null) {
+				statement.execute(sql  );
+				con.commit();
+			}
+		} catch (SQLException | IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					System.out.println("Error: " + e1.getMessage());
+				}
+			}
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					System.out.println("Error: " + e.getMessage());
+				}
+			}
+		} 
+	}
+	
+	private String createSQLDeleteByPro(String where) {
+		String tableName = "";
+		if (zClass.isAnnotationPresent(Table.class)) {
+			Table table = zClass.getAnnotation(Table.class);
+			tableName = table.name();
+		}
+		String sql = "DELETE FROM " + tableName + " " + where;
+		return sql;
+	}
 }

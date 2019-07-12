@@ -1,6 +1,7 @@
 package com.vvhien.api;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class BuildingAPI extends HttpServlet {
 
 		if (sizeOfParams == 0) {
 			// do getAllBuildings
-			Map<String, Object> properties = new HashedMap();
+			Map<String, Object> properties = new HashMap<>();
 			properties.put("name", "TMA");
 			properties.put("buildingarea", 1000);
 			
@@ -106,8 +107,8 @@ public class BuildingAPI extends HttpServlet {
 		resp.setContentType("application/json");
 
 		BuildingDTO buildingDTO = HttpUtil.of(req.getReader()).toModel(BuildingDTO.class);
-		buildingService.update(buildingDTO);
-		objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
+		buildingService.update(buildingDTO, buildingDTO.getId());
+		objectMapper.writeValue(resp.getOutputStream(), "{}");
 	}
 
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -118,10 +119,6 @@ public class BuildingAPI extends HttpServlet {
 		BuildingDTO buildingDTO = HttpUtil.of(req.getReader()).toModel(BuildingDTO.class);
 		buildingService.delete(buildingDTO.getId());
 		objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }

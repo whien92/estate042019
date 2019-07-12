@@ -46,6 +46,9 @@ public class BuildingController extends HttpServlet{
 			model.setListResults(buildingService.findAll(builder, pageble));
 		}
 		else if(action.equals("EDIT")) {
+			if(model.getId() != null) {
+				model = buildingService.findById1(model.getId());
+			}
 			url = "/views/building/edit.jsp";
 		}
 		

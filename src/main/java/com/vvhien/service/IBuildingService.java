@@ -11,6 +11,8 @@ import com.vvhien.paging.Pageble;
 public interface IBuildingService {
 	
 	BuildingDTO save(BuildingDTO buildingDTO);
+	
+	void update(BuildingDTO buildingDTO, Long id);
 
 	void update(BuildingDTO buildingDTO);
 

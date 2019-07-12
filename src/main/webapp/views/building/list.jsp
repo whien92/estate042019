@@ -212,7 +212,6 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<table class="table table-striped">
-							<caption>List of users</caption>
 							<thead class="thead-dark|thead-light">
 								<tr>
 									<th scope="col">Tên sản phẩm</th>
@@ -224,6 +223,7 @@
 									<th scope="col">Loại tòa nhà</th>
 									<th scope="col">Tên quản lý</th>
 									<th scope="col">Số điện thoại</th>
+									<th scope="col">Thao tác</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -238,6 +238,11 @@
 										<td>${item.type}</td>
 										<td>${item.managerName}</td>
 										<td>${item.managerPhone}</td>
+										<td>
+											<a class="btn btn-xs btn-primary btn-edit" data-toggle="tooltip" title='Cập nhật tòa nhà' href='<c:url value="/admin-building?action=EDIT&id=${item.id }" />'> 
+											 	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+											</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>

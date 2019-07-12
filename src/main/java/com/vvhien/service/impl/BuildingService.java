@@ -1,9 +1,7 @@
 package com.vvhien.service.impl;
 
-import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -11,21 +9,29 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.vvhien.builder.BuildingSearchBuilder;
 import com.vvhien.converter.BuildingConverter;
 import com.vvhien.dto.BuildingDTO;
 import com.vvhien.entity.BuildingEntity;
+import com.vvhien.entity.RentArea;
 import com.vvhien.paging.Pageble;
 import com.vvhien.repository.IBuildingRepository;
+import com.vvhien.repository.IRentAreaRepository;
 import com.vvhien.repository.impl.BuildingRepository;
+import com.vvhien.repository.impl.RentAreaRepository;
 import com.vvhien.service.IBuildingService;
 
 public class BuildingService implements IBuildingService{
-	@Inject
-	private IBuildingRepository buildingRepository;
+	//@Inject
+	private IBuildingRepository buildingRepository = new BuildingRepository();
 	
-	@Inject
-	private BuildingConverter buildingConverter;
+	//@Inject
+	private BuildingConverter buildingConverter = new BuildingConverter();
+	
+	//@Inject
+	private IRentAreaRepository rentAreaRepository = new RentAreaRepository();
 	
 	public BuildingService() {
 		if(buildingRepository == null) {
@@ -40,8 +46,21 @@ public class BuildingService implements IBuildingService{
 	public BuildingDTO save(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.converToEntity(buildingDTO);
 		buildingEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+		
+		buildingEntity.setCreatedBy("Hien Hien ");
+		buildingEntity.setType(StringUtils.join(buildingDTO.getBuildingTypes(), ","));
+		
 		Long id = buildingRepository.insert(buildingEntity);
-		return null;
+		
+		for (String item :  buildingDTO.getRentArea().split(",")) {
+			RentArea rentArea = new RentArea();
+			rentArea.setValue(item);
+			rentArea.setBuildingId(id);
+			rentAreaRepository.insert(rentArea);
+			
+		}
+		
+		return buildingConverter.convertToDTO(buildingRepository.findById(id));
 	}
 	
 	@Override
@@ -87,33 +106,31 @@ public class BuildingService implements IBuildingService{
 				.map(item -> buildingConverter.convertToDTO(item)).collect(Collectors.toList());
 		return results;
 	}
-	
-	
-	
-	/*private Object getValue(Field field, BuildingSearchBuilder builder) {
-		Object result = null;
-		Method getter = getGetter(field, builder);
-		if(getter != null) {
-			try {
-				result = getter.invoke(builder);
-			} catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			} 
-		}
-		return null;
+
+	@Override
+	public void update(BuildingDTO buildingDTO, Long id) {
+		BuildingEntity oldBuilding = buildingRepository.findById(id);
+		BuildingEntity newBuilding = buildingConverter.converToEntity(buildingDTO);
+		newBuilding.setCreatedBy(oldBuilding.getCreatedBy());
+		newBuilding.setCreatedDate(oldBuilding.getCreatedDate());
+		
+		String rentArea = buildingDTO.getRentArea();
+		updateRentArea(buildingDTO.getRentArea(), id);
+		newBuilding.setType(StringUtils.join(buildingDTO.getBuildingTypes(), ","));
+		buildingRepository.update(newBuilding);
 	}
-	private Method getGetter(Field field, BuildingSearchBuilder builder) {
-		String getterMethod = "get" + StringUtils.capitalize(field.getName());
-		try {
-			return builder.getClass().getMethod(getterMethod);
-		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-			return null;
-		} 
-	}*/
 
-
-
+	private void updateRentArea(String strRentArea, Long buildingId) {
+		//delete rentArea by buildingId
+		rentAreaRepository.deleteByBuilding(buildingId);
+		
+		//insert rentArea
+		for (String item : strRentArea.split(",")) {
+			RentArea rentArea = new RentArea();
+			rentArea.setBuildingId(buildingId);
+			rentArea.setValue(item);
+			rentAreaRepository.insert(rentArea);
+		}
+		
+	}
 }
