@@ -117,7 +117,7 @@ public class BuildingAPI extends HttpServlet {
 		resp.setContentType("application/json");
 
 		BuildingDTO buildingDTO = HttpUtil.of(req.getReader()).toModel(BuildingDTO.class);
-		buildingService.delete(buildingDTO.getId());
+		buildingService.delete(buildingDTO.getIds());
 		objectMapper.writeValue(resp.getOutputStream(), buildingDTO);
 	}
 

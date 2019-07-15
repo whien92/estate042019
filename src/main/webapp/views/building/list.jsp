@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="buildingURL" value="/admin-building" />
+<c:url var="buildingAPI" value="/api-admin-building"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -198,7 +199,7 @@
 										href='<c:url value="/admin-building?action=EDIT"/>'> <span><i
 										class="fa fa-plus-circle bigger-110 purple"></i></span>
 									</a>
-									<button type="button"
+									<button type="button" id="btnDelete" onclick=""
 									class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
 									data-toggle="tooltip" title='Xóa tòa nhà'>
 									<span><i class="fa fa-trash-o bigger-110 pink"></i></span>
@@ -214,6 +215,7 @@
 						<table class="table table-striped">
 							<thead class="thead-dark|thead-light">
 								<tr>
+									<th><input class="form-check-input" type="checkbox" name="" value="" id="checkAll"></th>
 									<th scope="col">Tên sản phẩm</th>
 									<th scope="col">Địa chỉ</th>
 									<th scope="col">Giá thuê</th>
@@ -229,6 +231,7 @@
 							<tbody>
 								<c:forEach var="item" items="${model.listResults}">
 									<tr>
+										<td><input class="form-check-input" type="checkbox" name="${item.id }" value="" id="checkbox_${item.id }"></td>
 										<td>${item.name}</td>
 										<td>${item.address}</td>
 										<td>${item.costRent}</td>
@@ -254,5 +257,31 @@
 		</div>
 	</div>
 	<!-- /.main-content -->
+	<script type="text/javascript">
+		$("#btnDelete").click(function() {
+			 var dataArray = $('input[type=checkbox]:checked').map(function() {
+				 return $(this).val();
+			 }).get();
+			 var data = {};
+			 data['ids'] = dataArray;
+			 deleteBuilding(dataArray);
+		});
+		
+		function deleteBuilding(data) {
+			$.ajax({
+				url: '${buildingAPI}',
+				data: JSON.stringify(data),
+				type: 'DELETE',
+				contentType: 'application/json',
+				dataType: 'json',
+				success: function(data) {
+					window.location.href = "${buildingURL}?action=LIST&message=delete_success";
+				},
+				error: function() {
+					window.location.href = "${buildingURL}?action=LIST&message=error_system";
+				}
+			});
+		}
+	</script>
 </body>
 </html>

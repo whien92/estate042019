@@ -133,4 +133,13 @@ public class BuildingService implements IBuildingService{
 		}
 		
 	}
+
+	@Override
+	public void delete(Long[] ids) {
+		for(Long id : ids){
+			rentAreaRepository.deleteByBuilding(id);
+			buildingRepository.delete(id);
+		}
+		
+	}
 }

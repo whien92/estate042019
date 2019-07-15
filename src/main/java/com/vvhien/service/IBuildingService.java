@@ -17,6 +17,8 @@ public interface IBuildingService {
 	void update(BuildingDTO buildingDTO);
 
 	void delete(Long id);
+	
+	void delete(Long[] ids);
 
 	BuildingDTO findById(Long id);
 
