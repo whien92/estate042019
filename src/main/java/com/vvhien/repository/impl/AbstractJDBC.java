@@ -690,7 +690,7 @@ public class AbstractJDBC<T> implements GenericJDBC<T> {
 			statement = con.prepareStatement(sql);
 
 			if (con != null) {
-				statement.execute(sql  );
+				statement.execute(sql);
 				con.commit();
 			}
 		} catch (SQLException | IllegalArgumentException e) {

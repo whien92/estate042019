@@ -212,7 +212,7 @@
 				<!-- end row 2 buttons edit/delete -->
 				<div class="row">
 					<div class="col-xs-12">
-						<table class="table table-striped">
+						<table class="table table-striped tbl-buildings">
 							<thead class="thead-dark|thead-light">
 								<tr>
 									<th><input class="form-check-input" type="checkbox" name="" value="" id="checkAll"></th>
@@ -231,7 +231,7 @@
 							<tbody>
 								<c:forEach var="item" items="${model.listResults}">
 									<tr>
-										<td><input class="form-check-input" type="checkbox" name="${item.id }" value="" id="checkbox_${item.id }"></td>
+										<td><input class="form-check-input" type="checkbox" name="${item.id }" value="${item.id}" id="checkbox_${item.id}"></td>
 										<td>${item.name}</td>
 										<td>${item.address}</td>
 										<td>${item.costRent}</td>
@@ -255,16 +255,16 @@
 				<!-- end row list result search -->
 			</div>
 		</div>
-	</div>
+	</div>    
 	<!-- /.main-content -->
 	<script type="text/javascript">
 		$("#btnDelete").click(function() {
-			 var dataArray = $('input[type=checkbox]:checked').map(function() {
+			 var dataArray = $('.tbl-buildings input[type=checkbox]:checked').map(function() {
 				 return $(this).val();
 			 }).get();
 			 var data = {};
 			 data['ids'] = dataArray;
-			 deleteBuilding(dataArray);
+			 deleteBuilding(data);
 		});
 		
 		function deleteBuilding(data) {
@@ -273,7 +273,6 @@
 				data: JSON.stringify(data),
 				type: 'DELETE',
 				contentType: 'application/json',
-				dataType: 'json',
 				success: function(data) {
 					window.location.href = "${buildingURL}?action=LIST&message=delete_success";
 				},

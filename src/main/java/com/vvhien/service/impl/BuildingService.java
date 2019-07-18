@@ -108,7 +108,7 @@ public class BuildingService implements IBuildingService{
 	}
 
 	@Override
-	public void update(BuildingDTO buildingDTO, Long id) {
+	public void update(BuildingDTO buildingDTO, long id) {
 		BuildingEntity oldBuilding = buildingRepository.findById(id);
 		BuildingEntity newBuilding = buildingConverter.converToEntity(buildingDTO);
 		newBuilding.setCreatedBy(oldBuilding.getCreatedBy());
@@ -120,7 +120,7 @@ public class BuildingService implements IBuildingService{
 		buildingRepository.update(newBuilding);
 	}
 
-	private void updateRentArea(String strRentArea, Long buildingId) {
+	private void updateRentArea(String strRentArea, long buildingId) {
 		//delete rentArea by buildingId
 		rentAreaRepository.deleteByBuilding(buildingId);
 		
@@ -136,7 +136,7 @@ public class BuildingService implements IBuildingService{
 
 	@Override
 	public void delete(Long[] ids) {
-		for(Long id : ids){
+		for(long id : ids){
 			rentAreaRepository.deleteByBuilding(id);
 			buildingRepository.delete(id);
 		}
